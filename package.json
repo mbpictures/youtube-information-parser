@@ -1,0 +1,40 @@
+{
+  "name": "youtube-url-parser",
+  "version": "0.0.1",
+  "description": "node module to parse the source video url of a youtube video",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --config jestconfig.json",
+    "build": "tsc",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "lint": "tslint -p tsconfig.json",
+    "prepare" : "npm run build",
+    "prepublishOnly": "npm test && npm run lint",
+    "preversion" : "npm run lint",
+    "version" : "npm run format && git add -A src",
+    "postversion" : "git push && git push --tags"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mbpictures/youtube-url-parser.git"
+  },
+  "keywords": ["youtube", "link", "video", "url", "parser", "source", "download"],
+  "author": "Marius Butz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mbpictures/youtube-url-parser/issues"
+  },
+  "homepage": "https://github.com/mbpictures/youtube-url-parser#readme",
+  "devDependencies": {
+    "@types/jest": "^26.0.7",
+    "jest": "^26.1.0",
+    "prettier": "^2.0.5",
+    "ts-jest": "^26.1.3",
+    "tslint": "^6.1.2",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.9.7"
+  },
+  "files": [
+    "lib/**/*"
+  ]
+}
