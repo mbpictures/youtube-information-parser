@@ -29,7 +29,7 @@
     "download"
   ],
   "author": "Marius Butz",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/mbpictures/youtube-information-parser/issues"
   },
