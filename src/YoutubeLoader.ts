@@ -5,6 +5,8 @@ export class YoutubeLoader {
     static readonly VIDEO_ID_NOT_FOUND_ERROR = 'No Video ID found!';
     static readonly VIDEO_NOT_FOUND_ERROR = 'Video not found or unavailable!';
 
+    private cachedVideoInfo: VideoInfo | undefined;
+
     constructor(url: string) {
         this._url = url;
     }
@@ -15,12 +17,17 @@ export class YoutubeLoader {
 
     set url(url: string) {
         this._url = url;
+        this.cachedVideoInfo = undefined;
     }
 
     async getVideoLinks(): Promise<VideoInfo> {
         const url: string = `https://www.youtube.com/get_video_info?html5=1&video_id=${this.getVideoId()}`;
 
         return new Promise<VideoInfo>((resolve, reject) => {
+            if(this.cachedVideoInfo !== undefined) {
+                resolve(this.cachedVideoInfo);
+                return;
+            }
             request(url, undefined, (err, res, body) => {
                 if (err || res.statusCode < 200 || res.statusCode >= 300) {
                     reject(`HTTP ${res.statusCode}: ${err}`);
@@ -60,6 +67,8 @@ export class YoutubeLoader {
                         });
                     });
 
+                this.cachedVideoInfo = videoInfo;
+
                 resolve(videoInfo);
             });
         });
@@ -67,24 +76,34 @@ export class YoutubeLoader {
 
     async getBestQualityStreamingInfo(filters?: Filter): Promise<StreamingInfo> {
         return new Promise<StreamingInfo>(async (resolve, reject) => {
+            if (this.cachedVideoInfo !== undefined) {
+                resolve(this.findBestQualityStreamingInfo(this.cachedVideoInfo, filters));
+                return;
+            }
             this.getVideoLinks()
                 .then((info: VideoInfo) => {
-                    let currentInfo = info.streamingData[0];
-                    info.streamingData.forEach((val: StreamingInfo) => {
-                        let override: boolean = val.height > currentInfo.height && val.width > currentInfo.width;
-                        if (!override) return;
-
-                        filters?.forEach((filter: [keyof StreamingInfo, any]) => {
-                            override = override && val[filter[0]] === filter[1];
-                        });
-                        if (override) currentInfo = val;
-                    });
-                    resolve(currentInfo);
+                    this.cachedVideoInfo = info;
+                    resolve(this.findBestQualityStreamingInfo(info, filters));
                 })
                 .catch((reason) => {
                     reject(reason);
                 });
         });
+    }
+
+    private findBestQualityStreamingInfo(info: VideoInfo, filters?: Filter): StreamingInfo {
+        let currentInfo = info.streamingData[0];
+        info.streamingData.forEach((val: StreamingInfo) => {
+            let override: boolean = val.height > currentInfo.height && val.width > currentInfo.width;
+            if (!override) return;
+
+            filters?.forEach((filter: [keyof StreamingInfo, any]) => {
+                override = override && val[filter[0]] === filter[1];
+            });
+            if (override) currentInfo = val;
+        });
+
+        return currentInfo;
     }
 
     private parseVideoInfo(plain: string): { [key: string]: any } {
