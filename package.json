@@ -45,5 +45,9 @@
   },
   "files": [
     "lib/**/*"
-  ]
+  ],
+  "dependencies": {
+    "@types/request": "^2.48.5",
+    "request": "^2.88.2"
+  }
 }
