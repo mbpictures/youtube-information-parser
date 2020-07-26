@@ -20,6 +20,11 @@ export class YoutubeLoader {
         this.cachedVideoInfo = undefined;
     }
 
+    /**
+     * This function retrieves the information of the specified video url.
+     * 
+     * @returns     Promise containing video information of type ```VideoInfo```
+     */
     async getVideoLinks(): Promise<VideoInfo> {
         const url: string = `https://www.youtube.com/get_video_info?html5=1&video_id=${this.getVideoId()}`;
 
@@ -74,6 +79,10 @@ export class YoutubeLoader {
         });
     }
 
+    /**
+     * Retrieve the StreamingInfo with the highest resolution.
+     * @param filters   optional: an array of tupels of the format [KEY, VALUE] to filter.
+     */
     async getBestQualityStreamingInfo(filters?: Filter): Promise<StreamingInfo> {
         return new Promise<StreamingInfo>(async (resolve, reject) => {
             if (this.cachedVideoInfo !== undefined) {
@@ -132,6 +141,9 @@ export class YoutubeLoader {
         return decodeURIComponent(str.split('+').join(' '));
     }
 
+    /**
+     * @returns     Video ID of the provided URL
+     */
     getVideoId(): string {
         const result = this._url.match(/[a-z0-9_-]{11}/i);
         if (result && result.length > 0) {
@@ -141,29 +153,50 @@ export class YoutubeLoader {
     }
 }
 
+/**
+ * Available Video Information.
+ */
 export interface VideoInfo {
+    /** Title of the video. */
     title: string;
+    /** Keywords to categorize the video. */
     keywords: string[];
+    /** Thumbnails in multiple resolutions */
     thumbnails: Thumbnail[];
+    /** Amount of clicks */
     views: number;
+    /** Creator of the video */
     creator: string;
+    /** Available direct video urls. {@type StreamingInfo} */
     streamingData: StreamingInfo[];
 }
 
+/** Thumbnail */
 export interface Thumbnail {
+    /** Thumbnail URL */
     url: string;
+    /** Thumbnail height */
     height: number;
+    /** Thumbnail width */
     width: number;
 }
 
 export interface StreamingInfo {
+    /** format ID */
     itag: number;
+    /** Video url */
     url: string;
+    /** video width */
     width: number;
+    /** video height */
     height: number;
+    /** quality of the video */
     quality: string;
+    /** displayed quality of the video */
     qualityLabel: string;
+    /** fps of the video */
     fps: number;
+    /** true when the video contains audio */
     audio: boolean;
 }
 
