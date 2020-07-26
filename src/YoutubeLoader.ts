@@ -17,10 +17,10 @@ export class YoutubeLoader {
         this._url = url;
     }
 
-    async getVideoLinks(): Promise<any> {
+    async getVideoLinks(): Promise<VideoInfo> {
         const url: string = `https://www.youtube.com/get_video_info?html5=1&video_id=${this.getVideoId()}`;
 
-        return new Promise<any>((resolve, reject) => {
+        return new Promise<VideoInfo>((resolve, reject) => {
             request(url, undefined, (err, res, body) => {
                 if (err || res.statusCode < 200 || res.statusCode >= 300) {
                     reject(`HTTP ${res.statusCode}: ${err}`);
