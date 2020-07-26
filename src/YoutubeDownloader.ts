@@ -31,8 +31,8 @@ export class YoutubeDownloader {
 
     downloadVideo(streamInfo: StreamingInfo): Promise<string> {
         return new Promise<string>((resolve, reject) => {
-            let file = fs.createWriteStream(this.downloadPath);
-            let req = request(streamInfo.url);
+            const file = fs.createWriteStream(this.downloadPath);
+            const req = request(streamInfo.url);
 
             req.on("response", (response) => {
                 if(response.statusCode < 200 || response.statusCode >= 300) {
@@ -59,12 +59,12 @@ export class YoutubeDownloader {
     }
 
     async downloadVideoAtIndex(index: number): Promise<string> {
-        let info: StreamingInfo = (await this.youtubeLoader.getVideoLinks()).streamingData[index];
+        const info: StreamingInfo = (await this.youtubeLoader.getVideoLinks()).streamingData[index];
         return this.downloadVideo(info);
     }
 
     async downloadBestQuality(): Promise<string> {
-        let info: StreamingInfo = (await this.youtubeLoader.getBestQualityStreamingInfo());
+        const info: StreamingInfo = (await this.youtubeLoader.getBestQualityStreamingInfo());
         return this.downloadVideo(info);
     }
 }
