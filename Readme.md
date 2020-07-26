@@ -1,5 +1,5 @@
-# Youtube URL Parser
-[![npm](https://img.shields.io/npm/v/youtube-url-parser)](https://www.npmjs.com/package/youtube-url-parser)
+# Youtube Information Parser
+[![npm](https://img.shields.io/npm/v/youtube-information-parser)](https://www.npmjs.com/package/youtube-information-parser)
 
 This module allows you to retrieve fast information about title, creator, clicks, thumbnails and raw video urls of any youtube video you want!
 

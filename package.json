@@ -1,5 +1,5 @@
 {
-  "name": "youtube-url-parser",
+  "name": "youtube-information-parser",
   "version": "1.0.0",
   "description": "node module to parse the source video url of a youtube video",
   "main": "index.js",
@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mbpictures/youtube-url-parser.git"
+    "url": "git+https://github.com/mbpictures/youtube-information-parser.git"
   },
   "keywords": [
     "youtube",
@@ -31,9 +31,9 @@
   "author": "Marius Butz",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/mbpictures/youtube-url-parser/issues"
+    "url": "https://github.com/mbpictures/youtube-information-parser/issues"
   },
-  "homepage": "https://github.com/mbpictures/youtube-url-parser#readme",
+  "homepage": "https://github.com/mbpictures/youtube-information-parser#readme",
   "devDependencies": {
     "@types/jest": "^26.0.7",
     "jest": "^26.1.0",
