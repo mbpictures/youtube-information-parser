@@ -24,7 +24,7 @@ export class YoutubeLoader {
         const url: string = `https://www.youtube.com/get_video_info?html5=1&video_id=${this.getVideoId()}`;
 
         return new Promise<VideoInfo>((resolve, reject) => {
-            if(this.cachedVideoInfo !== undefined) {
+            if (this.cachedVideoInfo !== undefined) {
                 resolve(this.cachedVideoInfo);
                 return;
             }
