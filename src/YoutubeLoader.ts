@@ -22,7 +22,7 @@ export class YoutubeLoader {
 
     /**
      * This function retrieves the information of the specified video url.
-     * 
+     *
      * @returns     Promise containing video information of type ```VideoInfo```
      */
     async getVideoLinks(): Promise<VideoInfo> {

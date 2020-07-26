@@ -1,10 +1,10 @@
-import { StreamingInfo, YoutubeLoader } from "./YoutubeLoader";
-import request = require("request");
-import fs = require("fs");
+import { StreamingInfo, YoutubeLoader } from './YoutubeLoader';
+import request = require('request');
+import fs = require('fs');
 
 export class YoutubeDownloader {
-    static readonly FILE_ERROR = "File error!";
-    static readonly DOWNLOAD_ERROR = "Download error!";
+    static readonly FILE_ERROR = 'File error!';
+    static readonly DOWNLOAD_ERROR = 'Download error!';
     private _loader: YoutubeLoader;
     private _downloadPath: string;
 
@@ -34,8 +34,8 @@ export class YoutubeDownloader {
             const file = fs.createWriteStream(this.downloadPath);
             const req = request(streamInfo.url);
 
-            req.on("response", (response) => {
-                if(response.statusCode < 200 || response.statusCode >= 300) {
+            req.on('response', (response) => {
+                if (response.statusCode < 200 || response.statusCode >= 300) {
                     reject(`HTTP ${response.statusCode} ERROR`);
                     return;
                 }
@@ -43,16 +43,16 @@ export class YoutubeDownloader {
                 req.pipe(file);
             });
 
-            req.on("error", (err) => {
+            req.on('error', (err) => {
                 fs.unlink(this.downloadPath, () => reject(YoutubeDownloader.DOWNLOAD_ERROR));
             });
 
-            file.on("finish", () => {
+            file.on('finish', () => {
                 file.close();
                 resolve(this.downloadPath);
             });
 
-            file.on("error", (err) => {
+            file.on('error', (err) => {
                 fs.unlink(this.downloadPath, () => reject(err));
             });
         });
@@ -64,7 +64,7 @@ export class YoutubeDownloader {
     }
 
     async downloadBestQuality(): Promise<string> {
-        const info: StreamingInfo = (await this.youtubeLoader.getBestQualityStreamingInfo());
+        const info: StreamingInfo = await this.youtubeLoader.getBestQualityStreamingInfo();
         return this.downloadVideo(info);
     }
 }
