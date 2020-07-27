@@ -29,7 +29,7 @@ export class YoutubeDownloader {
         this._loader = loader;
     }
 
-    downloadVideo(streamInfo: StreamingInfo): Promise<string> {
+    async downloadVideo(streamInfo: StreamingInfo): Promise<string> {
         return new Promise<string>((resolve, reject) => {
             const file = fs.createWriteStream(this.downloadPath);
             const req = request(streamInfo.url);
