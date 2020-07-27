@@ -22,7 +22,7 @@ export class YoutubeLoader {
 
     /**
      * This function retrieves the information of the specified video url.
-     *
+     * Warning: This function causes an HTTP call, when the video wasn't cached.
      * @returns     Promise containing video information of type ```VideoInfo```
      */
     async getVideoLinks(): Promise<VideoInfo> {
@@ -81,7 +81,8 @@ export class YoutubeLoader {
 
     /**
      * Retrieve the StreamingInfo with the highest resolution.
-     * @param filters   optional: an array of tupels of the format [KEY, VALUE] to filter.
+     * Warning: This function causes an HTTP call, when the video wasn't cached.
+     * @param filters   Filters. Format: [Type, KeyToCheck, ValueToCompareWith][]
      */
     async getBestQualityStreamingInfo(filters?: Filter): Promise<StreamingInfo> {
         return new Promise<StreamingInfo>(async (resolve, reject) => {
