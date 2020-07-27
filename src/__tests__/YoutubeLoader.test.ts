@@ -1,7 +1,12 @@
 import { YoutubeLoader, VideoInfo } from '../YoutubeLoader';
 
-test('video_id', () => {
+test('video_id1', () => {
     let yt: YoutubeLoader = new YoutubeLoader('https://www.youtube.com/watch?v=jdskfjl_ajs');
+    expect(yt.getVideoId()).toBe('jdskfjl_ajs');
+});
+
+test('video_id2', () => {
+    let yt: YoutubeLoader = new YoutubeLoader('http://youtu.be/jdskfjl_ajs');
     expect(yt.getVideoId()).toBe('jdskfjl_ajs');
 });
 
