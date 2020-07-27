@@ -21,10 +21,12 @@ let loader: YoutubeLoader = new YoutubeLoader("https://youtube.com/watch?v=VIDEO
 ```
 Execute the ```getVideoLinks()``` function to retrieve all information about the video. This function returns a promise, which means you can either use the ```.then(...)``` and ```.catch(...)``` functions or prefix the function call with a ```await``` statement to handle asynchronous behavior.
 
-When you only need the ```StreamingInfo``` which contains the video of the highest quality, execute the ```getBestQualityStreamingInfo(filters?: Filter)``` function. This will return the ```StreamingInfo``` with the highest video dimensions. To retrieve only videos which match specific attributes, like ```audio: true```, specify them in the optional filters parameter. The parameter is of type ```[keyof StreamingInfo, any][]``` which means, that you can provide an array of tupels. The first element of the tupel represents the key you want to check (e.g. ```"audio"```) and the second element represents the value of the key (e.g. ```true```). To retrieve the video with the highest quality which contains audio, you would call:
+When you only need the ```StreamingInfo``` which contains the video of the highest quality, execute the ```getBestQualityStreamingInfo(filters?: Filter): Promise<StreamingInfo>``` function. This will return the ```StreamingInfo``` with the highest video dimensions. To retrieve only videos which match specific attributes, like ```audio: true```, specify them in the optional filters parameter. The parameter is of type ```[FilterType, keyof StreamingInfo, any][]``` which means, that you can provide an array of 3-tuples. The first element of the tuple represents the comparison type (e.g. ==, <=, >=, ...), the second the key you want to check (e.g. ```"audio"```) and the last element represents the value of the key (e.g. ```true```). To retrieve the video with the highest quality which contains audio, you would call:
  ```TypeScript
- getBestQualityStreamingInfo([["audio", true]])
+ getBestQualityStreamingInfo([[FilterType.EQUAL, "audio", true]])
  ```
-
+To filter for a set of ```StreamingInfo```, that match your filter conditions, use the ```getFilteredStreamingInfo(filters: Filter): Promise<StreamingInfo[]>``` function.
+### Download videos
+To download a youtube video, the easiest way to do so is to create a new instance of the ```YoutubeDownloader``` class. Provide the URL of the youtube video and the download location (relative Path with filename) as parameters in the constructor. After that execute the ```downloadBestQuality(): Promise<string>``` to download the video with the highest video quality. You can otherwise search for a ```StreamingInfo``` and download the video with the specific ```StreamingInfo```.
 ## Contribution
 This project is work in progress. Feel free to create pull requests or report bugs using the github issue tracker!
