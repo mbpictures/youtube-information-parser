@@ -119,7 +119,7 @@ export class YoutubeLoader {
      */
     async getFilteredStreamingInfo(filter: Filter): Promise<StreamingInfo[]> {
         return new Promise<StreamingInfo[]>(async (resolve, reject) => {
-            if(this.cachedVideoInfo !== undefined) {
+            if (this.cachedVideoInfo !== undefined) {
                 resolve(this.filterStreamingInfo(this.cachedVideoInfo, filter));
                 return;
             }
@@ -143,14 +143,26 @@ export class YoutubeLoader {
         info.streamingData.forEach((val: StreamingInfo) => {
             let override: boolean = true;
             filters?.forEach((filter: [FilterType, keyof StreamingInfo, any]) => {
-                let localOverride: boolean; 
-                switch(filter[0]) {
-                    case FilterType.EQUAL: localOverride = val[filter[1]] === filter[2]; break;
-                    case FilterType.UNEQUAL: localOverride = val[filter[1]] !== filter[2]; break;
-                    case FilterType.LESS_THAN: localOverride = val[filter[1]] < filter[2]; break;
-                    case FilterType.GREATER_THAN: localOverride = val[filter[1]] > filter[2]; break;
-                    case FilterType.LESS_OR_EQUAL_THAN: localOverride = val[filter[1]] <= filter[2]; break;
-                    case FilterType.GREATER_OR_EQUAL_THAN: localOverride = val[filter[1]] >= filter[2]; break;
+                let localOverride: boolean;
+                switch (filter[0]) {
+                    case FilterType.EQUAL:
+                        localOverride = val[filter[1]] === filter[2];
+                        break;
+                    case FilterType.UNEQUAL:
+                        localOverride = val[filter[1]] !== filter[2];
+                        break;
+                    case FilterType.LESS_THAN:
+                        localOverride = val[filter[1]] < filter[2];
+                        break;
+                    case FilterType.GREATER_THAN:
+                        localOverride = val[filter[1]] > filter[2];
+                        break;
+                    case FilterType.LESS_OR_EQUAL_THAN:
+                        localOverride = val[filter[1]] <= filter[2];
+                        break;
+                    case FilterType.GREATER_OR_EQUAL_THAN:
+                        localOverride = val[filter[1]] >= filter[2];
+                        break;
                 }
                 override = override && localOverride;
             });
@@ -163,7 +175,7 @@ export class YoutubeLoader {
         const filteredStreamingInfo = this.filterStreamingInfo(info, filters);
         let currentInfo: StreamingInfo = filteredStreamingInfo[0];
         filteredStreamingInfo.forEach((val: StreamingInfo) => {
-            currentInfo = currentInfo.height < val.height && currentInfo.width < val.width ? val : currentInfo; 
+            currentInfo = currentInfo.height < val.height && currentInfo.width < val.width ? val : currentInfo;
         });
         return currentInfo;
     }
@@ -254,7 +266,7 @@ export enum FilterType {
     /** <= */
     LESS_OR_EQUAL_THAN,
     /** >= */
-    GREATER_OR_EQUAL_THAN
+    GREATER_OR_EQUAL_THAN,
 }
 
 export type Filter = [FilterType, keyof StreamingInfo, any][];
