@@ -139,7 +139,7 @@ export class YoutubeLoader {
      * @param filters   Filters. Format: [Type, KeyToCheck, ValueToCompareWith][]
      */
     filterStreamingInfo(info: VideoInfo, filters?: Filter): StreamingInfo[] {
-        let currentInfo: StreamingInfo[] = [];
+        const currentInfo: StreamingInfo[] = [];
         info.streamingData.forEach((val: StreamingInfo) => {
             let override: boolean = true;
             filters?.forEach((filter: [FilterType, keyof StreamingInfo, any]) => {
@@ -160,7 +160,7 @@ export class YoutubeLoader {
     }
 
     private findBestQualityStreamingInfo(info: VideoInfo, filters?: Filter): StreamingInfo {
-        let filteredStreamingInfo = this.filterStreamingInfo(info, filters);
+        const filteredStreamingInfo = this.filterStreamingInfo(info, filters);
         let currentInfo: StreamingInfo = filteredStreamingInfo[0];
         filteredStreamingInfo.forEach((val: StreamingInfo) => {
             currentInfo = currentInfo.height < val.height && currentInfo.width < val.width ? val : currentInfo; 
