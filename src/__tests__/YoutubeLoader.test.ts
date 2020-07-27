@@ -2,18 +2,18 @@ import { YoutubeLoader, VideoInfo, FilterType, StreamingInfo } from '../YoutubeL
 
 test('video_id1', () => {
     let yt: YoutubeLoader = new YoutubeLoader('https://www.youtube.com/watch?v=jdskfjl_ajs');
-    expect(yt.getVideoId()).toBe('jdskfjl_ajs');
+    expect(yt.videoId).toBe('jdskfjl_ajs');
 });
 
 test('video_id2', () => {
     let yt: YoutubeLoader = new YoutubeLoader('http://youtu.be/jdskfjl_ajs');
-    expect(yt.getVideoId()).toBe('jdskfjl_ajs');
+    expect(yt.videoId).toBe('jdskfjl_ajs');
 });
 
 test('video_id_fail', () => {
     let yt: YoutubeLoader = new YoutubeLoader('https://www.youtube.com/watch?v=');
     expect(() => {
-        yt.getVideoId();
+        yt.videoId;
     }).toThrow(YoutubeLoader.VIDEO_ID_NOT_FOUND_ERROR);
 });
 
