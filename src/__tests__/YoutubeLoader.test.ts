@@ -32,7 +32,7 @@ test('video_links_fail', () => {
 
 test('streaming_info_filter1', () => {
     let yt: YoutubeLoader = new YoutubeLoader('https://www.youtube.com/watch?v=ahCwqrYpIuM');
-    yt.getFilteredStreamingInfo([[FilterType.EQUAL, "audio", false]]).then((infos: StreamingInfo[]) => {
+    yt.getFilteredStreamingInfo([[FilterType.EQUAL, 'audio', false]]).then((infos: StreamingInfo[]) => {
         infos.forEach((info: StreamingInfo) => {
             expect(info.audio).toBe(false);
         });
@@ -41,7 +41,7 @@ test('streaming_info_filter1', () => {
 
 test('streaming_info_filter2', () => {
     let yt: YoutubeLoader = new YoutubeLoader('https://www.youtube.com/watch?v=ahCwqrYpIuM');
-    yt.getFilteredStreamingInfo([[FilterType.GREATER_OR_EQUAL_THAN, "width", 720]]).then((infos: StreamingInfo[]) => {
+    yt.getFilteredStreamingInfo([[FilterType.GREATER_OR_EQUAL_THAN, 'width', 720]]).then((infos: StreamingInfo[]) => {
         infos.forEach((info: StreamingInfo) => {
             expect(info.width).toBeGreaterThanOrEqual(720);
         });
