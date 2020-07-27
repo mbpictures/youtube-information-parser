@@ -100,18 +100,58 @@ export class YoutubeLoader {
         });
     }
 
-    private findBestQualityStreamingInfo(info: VideoInfo, filters?: Filter): StreamingInfo {
-        let currentInfo = info.streamingData[0];
-        info.streamingData.forEach((val: StreamingInfo) => {
-            let override: boolean = val.height > currentInfo.height && val.width > currentInfo.width;
-            if (!override) return;
-
-            filters?.forEach((filter: [keyof StreamingInfo, any]) => {
-                override = override && val[filter[0]] === filter[1];
-            });
-            if (override) currentInfo = val;
+    /**
+     * Retrieve the filtered StreamingInfo of the provided youtube URL.
+     * Warning: This function causes an HTTP call, when the video wasn't cached.
+     */
+    async getFilteredStreamingInfo(filter: Filter): Promise<StreamingInfo[]> {
+        return new Promise<StreamingInfo[]>(async (resolve, reject) => {
+            if(this.cachedVideoInfo !== undefined) {
+                resolve(this.filterStreamingInfo(this.cachedVideoInfo, filter));
+                return;
+            }
+            this.getVideoLinks()
+                .then((info: VideoInfo) => {
+                    resolve(this.filterStreamingInfo(info, filter));
+                })
+                .catch((reason) => {
+                    reject(reason);
+                });
         });
+    }
 
+    /**
+     * Filter the StreamingInfo of the VideoInformation to match the given Filters.
+     * @param info      VideoInfo which contains the StreamingInfo to filter
+     * @param filters   Filters. Format: [Type, KeyToCheck, ValueToCompareWith][]
+     */
+    filterStreamingInfo(info: VideoInfo, filters?: Filter): StreamingInfo[] {
+        let currentInfo: StreamingInfo[] = [];
+        info.streamingData.forEach((val: StreamingInfo) => {
+            let override: boolean = true;
+            filters?.forEach((filter: [FilterType, keyof StreamingInfo, any]) => {
+                let localOverride: boolean; 
+                switch(filter[0]) {
+                    case FilterType.EQUAL: localOverride = val[filter[1]] === filter[2]; break;
+                    case FilterType.UNEQUAL: localOverride = val[filter[1]] !== filter[2]; break;
+                    case FilterType.LESS_THAN: localOverride = val[filter[1]] < filter[2]; break;
+                    case FilterType.GREATER_THAN: localOverride = val[filter[1]] > filter[2]; break;
+                    case FilterType.LESS_OR_EQUAL_THAN: localOverride = val[filter[1]] <= filter[2]; break;
+                    case FilterType.GREATER_OR_EQUAL_THAN: localOverride = val[filter[1]] >= filter[2]; break;
+                }
+                override = override && localOverride;
+            });
+            if (override) currentInfo.push(val);
+        });
+        return currentInfo;
+    }
+
+    private findBestQualityStreamingInfo(info: VideoInfo, filters?: Filter): StreamingInfo {
+        let filteredStreamingInfo = this.filterStreamingInfo(info, filters);
+        let currentInfo: StreamingInfo = filteredStreamingInfo[0];
+        filteredStreamingInfo.forEach((val: StreamingInfo) => {
+            currentInfo = currentInfo.height < val.height && currentInfo.width < val.width ? val : currentInfo; 
+        });
         return currentInfo;
     }
 
@@ -200,4 +240,19 @@ export interface StreamingInfo {
     audio: boolean;
 }
 
-export type Filter = [keyof StreamingInfo, any][];
+export enum FilterType {
+    /** == */
+    EQUAL,
+    /** != */
+    UNEQUAL,
+    /** < */
+    LESS_THAN,
+    /** > */
+    GREATER_THAN,
+    /** <= */
+    LESS_OR_EQUAL_THAN,
+    /** >= */
+    GREATER_OR_EQUAL_THAN
+}
+
+export type Filter = [FilterType, keyof StreamingInfo, any][];
