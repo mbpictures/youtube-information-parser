@@ -20,13 +20,25 @@ export class YoutubeLoader {
         this.cachedVideoInfo = undefined;
     }
 
+    set videoId(id: string) {
+        this.url = `https://youtube.com/watch?v=${id}`;
+    }
+
+    get videoId(): string {
+        const result = this._url.match(/[a-z0-9_-]{11}/i);
+        if (result && result.length > 0) {
+            return result[0];
+        }
+        throw new Error(YoutubeLoader.VIDEO_ID_NOT_FOUND_ERROR);
+    }
+
     /**
      * This function retrieves the information of the specified video url.
      * Warning: This function causes an HTTP call, when the video wasn't cached.
      * @returns     Promise containing video information of type ```VideoInfo```
      */
     async getVideoLinks(): Promise<VideoInfo> {
-        const url: string = `https://www.youtube.com/get_video_info?html5=1&video_id=${this.getVideoId()}`;
+        const url: string = `https://www.youtube.com/get_video_info?html5=1&video_id=${this.videoId}`;
 
         return new Promise<VideoInfo>((resolve, reject) => {
             if (this.cachedVideoInfo !== undefined) {
@@ -180,17 +192,6 @@ export class YoutubeLoader {
 
     private decodeUrlFormat(str: string): string {
         return decodeURIComponent(str.split('+').join(' '));
-    }
-
-    /**
-     * @returns     Video ID of the provided URL
-     */
-    getVideoId(): string {
-        const result = this._url.match(/[a-z0-9_-]{11}/i);
-        if (result && result.length > 0) {
-            return result[0];
-        }
-        throw new Error(YoutubeLoader.VIDEO_ID_NOT_FOUND_ERROR);
     }
 }
 
