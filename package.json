@@ -2,7 +2,7 @@
   "name": "youtube-information-parser",
   "version": "1.0.4",
   "description": "node module to parse the source video url of a youtube video",
-  "main": "index.js",
+  "main": "./lib/index.js",
   "scripts": {
     "test": "jest --config jestconfig.json --detectOpenHandles",
     "build": "tsc",
