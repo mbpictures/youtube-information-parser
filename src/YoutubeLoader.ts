@@ -69,8 +69,8 @@ export class YoutubeLoader {
                     streamingData: [],
                 };
 
-                plainVideoInfo.player_response.streamingData.formats
-                    .concat(plainVideoInfo.player_response.streamingData.adaptiveFormats)
+                const formats = plainVideoInfo.player_response.streamingData.formats ?? [];
+                formats.concat(plainVideoInfo.player_response.streamingData.adaptiveFormats)
                     .forEach((val: any) => {
                         videoInfo.streamingData.push({
                             itag: val.itag ?? 0,
