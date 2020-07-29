@@ -66,6 +66,7 @@ export class YoutubeLoader {
                     thumbnails: plainVideoInfo.player_response.videoDetails.thumbnail.thumbnails ?? [],
                     views: parseInt(plainVideoInfo.player_response.videoDetails.viewCount, 10) ?? 0,
                     creator: plainVideoInfo.player_response.videoDetails.author ?? '',
+                    shortDescription: plainVideoInfo.player_response.videoDetails.shortDescription ?? '',
                     streamingData: [],
                 };
 
@@ -223,6 +224,8 @@ export interface VideoInfo {
     creator: string;
     /** Available direct video urls. {@type StreamingInfo} */
     streamingData: StreamingInfo[];
+    /** Short description of the video */
+    shortDescription: string;
 }
 
 /** Thumbnail */
