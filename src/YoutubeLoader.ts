@@ -4,6 +4,7 @@ export class YoutubeLoader {
     private _url: string;
     static readonly VIDEO_ID_NOT_FOUND_ERROR = 'No Video ID found!';
     static readonly VIDEO_NOT_FOUND_ERROR = 'Video not found or unavailable!';
+    static readonly VIDEO_NOT_PLAYABLE = "Video not playable!";
 
     private cachedVideoInfo: VideoInfo | undefined;
 
@@ -54,9 +55,9 @@ export class YoutubeLoader {
                 const plainVideoInfo = this.parseVideoInfo(body);
                 if (
                     plainVideoInfo.player_response.playabilityStatus.status &&
-                    plainVideoInfo.player_response.playabilityStatus.status === 'ERROR'
+                    plainVideoInfo.player_response.playabilityStatus.status !== 'OK'
                 ) {
-                    reject(YoutubeLoader.VIDEO_NOT_FOUND_ERROR);
+                    reject(plainVideoInfo.player_response.playabilityStatus.status === "UNPLAYABLE" ? YoutubeLoader.VIDEO_NOT_PLAYABLE : YoutubeLoader.VIDEO_NOT_FOUND_ERROR);
                     return;
                 }
 
