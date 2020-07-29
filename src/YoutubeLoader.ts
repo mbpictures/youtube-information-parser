@@ -71,19 +71,18 @@ export class YoutubeLoader {
                 };
 
                 const formats = plainVideoInfo.player_response.streamingData.formats ?? [];
-                formats.concat(plainVideoInfo.player_response.streamingData.adaptiveFormats)
-                    .forEach((val: any) => {
-                        videoInfo.streamingData.push({
-                            itag: val.itag ?? 0,
-                            url: val.url ?? '',
-                            width: val.width ?? 0,
-                            height: val.height ?? 0,
-                            quality: val.quality ?? 'low',
-                            qualityLabel: val.qualityLabel ?? '320p',
-                            audio: 'audioChannels' in val && val.audioChannels > 0,
-                            fps: val.fps ?? 0,
-                        });
+                formats.concat(plainVideoInfo.player_response.streamingData.adaptiveFormats).forEach((val: any) => {
+                    videoInfo.streamingData.push({
+                        itag: val.itag ?? 0,
+                        url: val.url ?? '',
+                        width: val.width ?? 0,
+                        height: val.height ?? 0,
+                        quality: val.quality ?? 'low',
+                        qualityLabel: val.qualityLabel ?? '320p',
+                        audio: 'audioChannels' in val && val.audioChannels > 0,
+                        fps: val.fps ?? 0,
                     });
+                });
 
                 this.cachedVideoInfo = videoInfo;
 
