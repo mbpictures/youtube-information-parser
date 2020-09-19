@@ -69,7 +69,9 @@ export class YoutubeLoader {
                     title: plainVideoInfo.player_response.videoDetails.title ?? '',
                     keywords: plainVideoInfo.player_response.videoDetails.keywords ?? [],
                     thumbnails: plainVideoInfo.player_response.videoDetails.thumbnail.thumbnails ?? [],
-                    views: parseInt(plainVideoInfo.player_response.videoDetails.viewCount, 10) ?? 0,
+                    views: isNaN(parseInt(plainVideoInfo.player_response.videoDetails.viewCount, 10)) ? 
+                        0 : 
+                        parseInt(plainVideoInfo.player_response.videoDetails.viewCount, 10),
                     creator: plainVideoInfo.player_response.videoDetails.author ?? '',
                     shortDescription: plainVideoInfo.player_response.videoDetails.shortDescription ?? '',
                     streamingData: [],
