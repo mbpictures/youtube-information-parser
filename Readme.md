@@ -1,4 +1,5 @@
 # Youtube Information Parser
+[![DeepScan grade](https://deepscan.io/api/teams/10967/projects/13904/branches/246156/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=10967&pid=13904&bid=246156)
 [![npm](https://img.shields.io/npm/v/youtube-information-parser)](https://www.npmjs.com/package/youtube-information-parser)
 
 This module allows you to retrieve information about title, creator, clicks, thumbnails and raw video urls of any youtube video you want!
